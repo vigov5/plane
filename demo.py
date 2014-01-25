@@ -138,6 +138,7 @@ clock = pygame.time.Clock()
 allsprites = pygame.sprite.RenderPlain(my_plane)
 ground_img = pygame.image.load(os.path.join('imgs', 'b32.png'))
 sky_img = pygame.image.load(os.path.join('imgs', 'b33.png'))
+house_img = pygame.image.load(os.path.join('imgs', 'b36.png'))
 
 while 1:
     clock.tick(60)
@@ -157,6 +158,7 @@ while 1:
     for i in range(10):
         screen.blit(ground_img, [i * ground_img.get_width(), height - ground_img.get_height()])
         screen.blit(sky_img, [i * ground_img.get_width(), height - ground_img.get_height() - sky_img.get_height()])
+    screen.blit(house_img, [40, height - house_img.get_height() - 22])
 
     allsprites.update()
     for sprite in allsprites:
