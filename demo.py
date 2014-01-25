@@ -30,7 +30,7 @@ class Plane(pygame.sprite.Sprite):
             pygame.K_LEFT : False
         }
 
-    def update(self):
+    def update(self, screen):
         if abs(self.vx) > MAX_VX:
             self.vx = copysign(MAX_VX, self.vx)
         if abs(self.vy) > MAX_VY:
@@ -69,6 +69,11 @@ class Plane(pygame.sprite.Sprite):
         file_name= "imgs/b%d.png" % (images[index])
         self.image = pygame.image.load(file_name)
 
+        cx, cy = self.rect.center
+        #self.angle = math.atan(-self.vx/(self.vy + 0.001))
+        end_point = (cx + 50 * math.sin(self.angle), cy + 50 * math.cos(self.angle))
+        pygame.draw.line(screen, (255, 255, 255), self.rect.center, end_point)
+
 
     def update_angle(self, target_angle):
         #print self.angle/math.pi, target_angle/math.pi
@@ -105,14 +110,6 @@ class Plane(pygame.sprite.Sprite):
             self.angle = math.pi
         elif self.angle >= math.pi:
             self.angle = -math.pi
-
-
-    def draw(self, screen):
-        cx, cy = self.rect.center
-        #self.angle = math.atan(-self.vx/(self.vy + 0.001))
-        end_point = (cx + 50 * math.sin(self.angle), cy + 50 * math.cos(self.angle))
-        pygame.draw.line(screen, (255, 255, 255), self.rect.center, end_point)
-
 
     def handle(self, event):
         if event.type in [pygame.KEYUP, pygame.KEYDOWN]:
@@ -160,9 +157,7 @@ while 1:
         screen.blit(sky_img, [i * ground_img.get_width(), height - ground_img.get_height() - sky_img.get_height()])
     screen.blit(house_img, [40, height - house_img.get_height() - 22])
 
-    allsprites.update()
-    for sprite in allsprites:
-        sprite.draw(screen)
+    allsprites.update(screen)
 
     allsprites.draw(screen)
     screen.blit(text, textpos)
