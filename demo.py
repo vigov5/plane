@@ -14,7 +14,7 @@ MAX_VY = 3
 
 class Plane(pygame.sprite.Sprite):
 
-    step_angle = math.pi/72;
+    step_angle = math.pi/72
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -61,8 +61,6 @@ class Plane(pygame.sprite.Sprite):
             self.vx += 0.1
             target_angle = math.pi/2
         self.update_angle(target_angle)
-
-        #
 
         images = {-8:4, -7:3, -6:2, -5:1, -4:0, -3:15, -2:14, -1:13, 0:12, 1:11, 2:10, 3:9, 4:8, 5:7, 6:6, 7:5, 8:4}
         #-8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8
@@ -130,6 +128,7 @@ pygame.init()
 size = width, height = 640, 480
 speed = [2, 2]
 black = 0, 0, 0
+sky_color = 0, 152, 232
 
 screen = pygame.display.set_mode(size)
 
@@ -137,6 +136,8 @@ my_plane = Plane()
 
 clock = pygame.time.Clock()
 allsprites = pygame.sprite.RenderPlain(my_plane)
+ground_img = pygame.image.load(os.path.join('imgs', 'b32.png'))
+sky_img = pygame.image.load(os.path.join('imgs', 'b33.png'))
 
 while 1:
     clock.tick(60)
@@ -152,7 +153,11 @@ while 1:
         text = font.render("Hello ", 1, (255, 0, 0))
         textpos = text.get_rect(centerx=width/2)
 
-    screen.fill(black)
+    screen.fill(sky_color)
+    for i in range(10):
+        screen.blit(ground_img, [i * ground_img.get_width(), height - ground_img.get_height()])
+        screen.blit(sky_img, [i * ground_img.get_width(), height - ground_img.get_height() - sky_img.get_height()])
+
     allsprites.update()
     for sprite in allsprites:
         sprite.draw(screen)
